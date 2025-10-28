@@ -159,9 +159,7 @@ public class SytelineAPIRest_01
 
         // PARSE THE REQUEST
 
-        APILoadCollectionResponse temp = System.Text.Json.JsonSerializer.Deserialize<APILoadCollectionResponse>(httpResponse.Content.ReadAsStringAsync().Result) ?? throw new Exception("Unable to parse response.");
-
-        return temp;
+        return System.Text.Json.JsonSerializer.Deserialize<APILoadCollectionResponse>(httpResponse.Content.ReadAsStringAsync().Result) ?? throw new Exception("Unable to parse response.");
 
     }
 
