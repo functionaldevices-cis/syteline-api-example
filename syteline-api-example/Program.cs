@@ -7,9 +7,13 @@ namespace syteline_api_example {
 
         static void Main() {
 
+            /*********************************************************************************************/
+            /* API GUIDE - PART 2 - AUTHENTICATION
+            /*********************************************************************************************/
+
             // INITIALIZE THE RESTv2 API THROUGH ION, USING THE CREDENTIALS THAT YOU DOWNLOAD AFTER CREATING AN AUTHORIZED APP AND SERVICE ACCOUNT
 
-            SytelineAPIRest_01 sytelineAPI_ION = new(
+            SytelineAPIRest_00 sytelineAPI_ION = new(
                 new SytelineConnection(
                     APIType: "ION",
                     Config: "",
@@ -34,7 +38,7 @@ namespace syteline_api_example {
 
             // INITIALIZE THE RESTv2 API DIRECTLY, USING YOUR REGULAR SYTELINE ACCOUNT CREDENTIALS
 
-            SytelineAPIRest_01 sytelineAPI_Direct = new(
+            SytelineAPIRest_00 sytelineAPI_Direct = new(
                 new SytelineConnection(
                     APIType: "Direct",
                     Config: "",
@@ -46,46 +50,49 @@ namespace syteline_api_example {
                 )
             );
 
+            /*********************************************************************************************/
+            /* API GUIDE - PART 3 - LOADING RECORDS - EXAMPLE 1: LOADING SIMPLE IDO, NO PAGINATION
+            /*********************************************************************************************/
+
+            // INITIALIZE THE RESTv2 API THROUGH ION, USING THE CREDENTIALS THAT YOU DOWNLOAD AFTER CREATING AN AUTHORIZED APP AND SERVICE ACCOUNT
+
+            SytelineAPIRest_01 sytelineAPI = new(
+                new SytelineConnection(
+                    APIType: "ION",
+                    Config: "",
+                    CredentialsION: new(
+                        ti: "",
+                        cn: "",
+                        dt: "",
+                        ci: "",
+                        cs: "",
+                        iu: "",
+                        pu: "",
+                        oa: "",
+                        ot: "",
+                        or: "",
+                        ev: "",
+                        v: "",
+                        saak: "",
+                        sask: ""
+                    )
+                )
+            );
+
             // LOAD A SAMPLE REQUEST
 
-            APILoadCollectionResponse response_ION = sytelineAPI_ION.LoadCollection(
+            APILoadCollectionResponse response = sytelineAPI.LoadCollection(
                 idoName: "SLCustomers",
                 properties: [
                     "CustNum",
                     "CustSeq",
                     "Name",
-                    "Addr_1",
-                    "Addr_2",
-                    "Addr_3",
-                    "Addr_4",
-                    "City",
-                    "StateCode",
-                    "Country"
                 ],
-                filter: "CustNum = 'C000001'"
+                filter: "CustNum = 'C000079'",
+                readOnly: true
             );
 
-            // LOAD A SAMPLE REQUEST
-
-            APILoadCollectionResponse response_Direct = sytelineAPI_Direct.LoadCollection(
-                idoName: "SLCustomers",
-                properties: [
-                    "CustNum",
-                    "CustSeq",
-                    "Name",
-                    "Addr_1",
-                    "Addr_2",
-                    "Addr_3",
-                    "Addr_4",
-                    "City",
-                    "StateCode",
-                    "Country"
-                ],
-                filter: "CustNum = 'C000001'"
-            );
-
-            Console.WriteLine($"The ION request retrieved {response_ION.Items.Count} items.");
-            Console.WriteLine($"The Direct request retrieved {response_Direct.Items.Count} items.");
+            Console.WriteLine($"The request retrieved {response.Items.Count} items.");
             Console.ReadLine();
 
         }
