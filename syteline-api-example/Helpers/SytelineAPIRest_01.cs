@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using syteline_api_example.Models;
-using Thinktecture.IdentityModel.Client;
 
 namespace syteline_api_example.Helpers;
 

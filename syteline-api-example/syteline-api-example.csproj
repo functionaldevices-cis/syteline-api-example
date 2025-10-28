@@ -9,8 +9,4 @@
       <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Thinktecture.IdentityModel.Client" Version="4.0.1" />
-  </ItemGroup>
-
 </Project>
