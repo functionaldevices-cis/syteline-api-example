@@ -29,14 +29,14 @@ public class SytelineAPIRest_02
         get; set;
     } = new();
 
-    public SytelineAPIRest_02(SytelineConnection connection)
+    public SytelineAPIRest_02(SytelineConnection connection, int requestCap = 200)
     {
 
         this.SytelineConnection = connection;
 
         // INIT SETTINGS
 
-        this.RequestCap = 200;
+        this.RequestCap = requestCap;
 
         // INIT HTTP CLIENT
 
