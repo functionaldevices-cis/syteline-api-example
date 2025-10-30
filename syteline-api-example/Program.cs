@@ -96,7 +96,7 @@ namespace syteline_api_example {
             Console.WriteLine($"The request retrieved {response_01.Items.Count} items.");
 
             /*********************************************************************************************/
-            /* API GUIDE - PART 3 - LOADING RECORDS - EXAMPLE 1: LOADING SIMPLE IDO, NO PAGINATION
+            /* API GUIDE - PART 3 - LOADING RECORDS - EXAMPLE 2: LOADING SIMPLE IDO, WITH PAGINATION
             /*********************************************************************************************/
 
             // INITIALIZE THE RESTv2 API THROUGH ION, USING THE CREDENTIALS THAT YOU DOWNLOAD AFTER CREATING AN AUTHORIZED APP AND SERVICE ACCOUNT
