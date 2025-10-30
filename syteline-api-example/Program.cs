@@ -14,7 +14,7 @@ namespace syteline_api_example {
             // INITIALIZE THE RESTv2 API THROUGH ION, USING THE CREDENTIALS THAT YOU DOWNLOAD AFTER CREATING AN AUTHORIZED APP AND SERVICE ACCOUNT
 
             SytelineAPIRest_00 sytelineAPI_00_ION = new(
-                new SytelineConnection(
+                connection: new SytelineConnection(
                     APIType: "ION",
                     Config: "",
                     CredentialsION: new(
@@ -39,7 +39,7 @@ namespace syteline_api_example {
             // INITIALIZE THE RESTv2 API DIRECTLY, USING YOUR REGULAR SYTELINE ACCOUNT CREDENTIALS
 
             SytelineAPIRest_00 sytelineAPI_00_Direct = new(
-                new SytelineConnection(
+                connection: new SytelineConnection(
                     APIType: "Direct",
                     Config: "",
                     CredentialsDirect: new(
@@ -58,7 +58,7 @@ namespace syteline_api_example {
             // ( FEEL FREE TO USE DIRECT CREDENTIALS HERE INSTEAD)
  
             SytelineAPIRest_01 sytelineAPI_01 = new(
-                new SytelineConnection(
+                connection: new SytelineConnection(
                     APIType: "ION",
                     Config: "",
                     CredentialsION: new(
@@ -103,7 +103,7 @@ namespace syteline_api_example {
             // ( FEEL FREE TO USE DIRECT CREDENTIALS HERE INSTEAD)
 
             SytelineAPIRest_02 sytelineAPI_02 = new(
-                new SytelineConnection(
+                connection: new SytelineConnection(
                     APIType: "ION",
                     Config: "",
                     CredentialsION: new(
@@ -122,7 +122,8 @@ namespace syteline_api_example {
                         saak: "",
                         sask: ""
                     )
-                )
+                ),
+                requestCap: 5
             );
 
             // LOAD A SAMPLE REQUEST
