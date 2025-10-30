@@ -56,7 +56,7 @@ namespace syteline_api_example {
 
             // INITIALIZE THE RESTv2 API THROUGH ION, USING THE CREDENTIALS THAT YOU DOWNLOAD AFTER CREATING AN AUTHORIZED APP AND SERVICE ACCOUNT
             // ( FEEL FREE TO USE DIRECT CREDENTIALS HERE INSTEAD)
-
+ 
             SytelineAPIRest_01 sytelineAPI_01 = new(
                 new SytelineConnection(
                     APIType: "ION",
@@ -94,7 +94,6 @@ namespace syteline_api_example {
             );
 
             Console.WriteLine($"The request retrieved {response_01.Items.Count} items.");
-            Console.ReadLine();
 
             /*********************************************************************************************/
             /* API GUIDE - PART 3 - LOADING RECORDS - EXAMPLE 1: LOADING SIMPLE IDO, NO PAGINATION
@@ -140,7 +139,6 @@ namespace syteline_api_example {
             );
 
             Console.WriteLine($"The request retrieved {response_02.Items.Count} items.");
-            Console.ReadLine();
 
         }
 
