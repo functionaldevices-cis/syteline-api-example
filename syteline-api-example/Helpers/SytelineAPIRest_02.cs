@@ -10,7 +10,7 @@ namespace syteline_api_example.Helpers;
 
 public class SytelineAPIRest_02
 {
-    private int StreamingRecordCap
+    private int RequestCap
     {
         get; init;
     }
@@ -36,7 +36,7 @@ public class SytelineAPIRest_02
 
         // INIT SETTINGS
 
-        this.StreamingRecordCap = 200;
+        this.RequestCap = 200;
 
         // INIT HTTP CLIENT
 
@@ -130,12 +130,8 @@ public class SytelineAPIRest_02
 
     }
 
-    public APILoadCollectionResponse LoadCollection(string idoName, List<string> properties, string? filter = null, List<OrderByProperty>? orderBy = null, int? recordCap = null, bool? distinct = null, string? clm = null, List<string>? clmParam = null, string? pqc = null, bool? readOnly = null, Action<ActionStatus>? onStartCallback = null, Action<ActionStatus>? onProgressCallback = null, Action<ActionStatus>? onCompleteCallback = null)
+    public APILoadCollectionResponse LoadCollection(string idoName, List<string> properties, string? filter = null, List<OrderByProperty>? orderBy = null, int? recordCap = null, bool? distinct = null, string? clm = null, List<string>? clmParam = null, string? pqc = null, bool? readOnly = null)
     {
-
-        // PARSE INPUT PARAMS
-
-        string? orderByString = orderBy == null ? null : string.Join(", ", (orderBy ?? []).Select(property => property.OrderBy));
 
         // INIT GENERAL VARS
 
@@ -144,20 +140,13 @@ public class SytelineAPIRest_02
 
         // INIT PAGINATION VARS
 
-        int requestCap = recordCap != null ? Math.Min((int)recordCap, this.StreamingRecordCap) : this.StreamingRecordCap;
-        bool haveToPaginate = recordCap == null || recordCap >= this.StreamingRecordCap;
+        int requestCap = recordCap != null ? Math.Min((int)recordCap, this.RequestCap) : this.RequestCap;
+        bool haveToPaginate = recordCap == null || recordCap >= this.RequestCap;
         bool moreRowsExist;
         bool totalCapNotMet = true;
         string? bookmark = null;
-        int? totalToRetrieve = null;
 
         // IF WE ARE PAGINATING AND WE ARE USING SOAP, WE HAVE TO ADD THE ORDERBY AND PAGING PROPERTIES TO THE QUERY
-
-        onStartCallback?.Invoke(new(
-            CountTotal: totalToRetrieve ?? -1,
-            Status: "Initializing",
-            Success: true
-        ));
 
         do
         {
@@ -168,7 +157,7 @@ public class SytelineAPIRest_02
                 idoName: idoName,
                 properties: properties,
                 filter: filter,
-                orderBy: orderByString,
+                orderBy: orderBy,
                 requestCap: requestCap,
                 distinct: distinct,
                 clm: clm,
@@ -190,13 +179,6 @@ public class SytelineAPIRest_02
 
             data = data.Concat(parsedResponseContent.Items).ToList();
 
-            onProgressCallback?.Invoke(new(
-                CountTotal: totalToRetrieve ?? -1,
-                CountCompleted: data.Count,
-                Status: "Loading",
-                Success: true
-            ));
-
             if (recordCap != null)
             {
                 if (recordCap <= data.Count)
@@ -210,18 +192,11 @@ public class SytelineAPIRest_02
         parsedResponseContent.Items = data;
         parsedResponseContent.Config = this.SytelineConnection.Config;
 
-        onCompleteCallback?.Invoke(new(
-            CountTotal: totalToRetrieve ?? -1,
-            CountCompleted: data.Count,
-            Status: "Loading",
-            Success: parsedResponseContent.Success
-        ));
-
         return parsedResponseContent;
 
     }
 
-    private APILoadCollectionResponse LoadCollectionBatch(string idoName, List<string> properties, string? filter, string? orderBy = null, int? requestCap = 0, bool? distinct = null, string? clm = null, List<string>? clmParam = null, string? bookmark = null, string? pqc = null, bool? readOnly = null)
+    private APILoadCollectionResponse LoadCollectionBatch(string idoName, List<string> properties, string? filter, List<OrderByProperty>? orderBy = null, int? requestCap = 0, bool? distinct = null, string? clm = null, List<string>? clmParam = null, string? bookmark = null, string? pqc = null, bool? readOnly = null)
     {
 
         // BUILD THE REQUEST
@@ -229,7 +204,7 @@ public class SytelineAPIRest_02
         string requestURL = this.SytelineConnection.BaseURL + "/IDORequestService/ido/load/" + idoName + "?" +  BuildLoadCollectionParametersString(
             properties: properties,
             filter: filter,
-            orderBy: orderBy,
+            orderBy: orderBy == null ? null : string.Join(", ", (orderBy ?? []).Select(property => property.OrderBy)),
             recordCap: requestCap,
             distinct: distinct,
             clm: clm,
@@ -282,10 +257,7 @@ public class SytelineAPIRest_02
             lQueryPrameters.Add("orderBy=" +  EncodeValue(orderBy));
         }
 
-        if (recordCap != null)
-        {
-            lQueryPrameters.Add("recordCap=" + EncodeValue(recordCap));
-        }
+        lQueryPrameters.Add("recordCap=" + EncodeValue(recordCap ?? 0));
 
         if (distinct != null)
         {

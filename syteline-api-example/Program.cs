@@ -13,7 +13,7 @@ namespace syteline_api_example {
 
             // INITIALIZE THE RESTv2 API THROUGH ION, USING THE CREDENTIALS THAT YOU DOWNLOAD AFTER CREATING AN AUTHORIZED APP AND SERVICE ACCOUNT
 
-            SytelineAPIRest_00 sytelineAPI_ION = new(
+            SytelineAPIRest_00 sytelineAPI_00_ION = new(
                 new SytelineConnection(
                     APIType: "ION",
                     Config: "",
@@ -38,7 +38,7 @@ namespace syteline_api_example {
 
             // INITIALIZE THE RESTv2 API DIRECTLY, USING YOUR REGULAR SYTELINE ACCOUNT CREDENTIALS
 
-            SytelineAPIRest_00 sytelineAPI_Direct = new(
+            SytelineAPIRest_00 sytelineAPI_00_Direct = new(
                 new SytelineConnection(
                     APIType: "Direct",
                     Config: "",
@@ -57,7 +57,7 @@ namespace syteline_api_example {
             // INITIALIZE THE RESTv2 API THROUGH ION, USING THE CREDENTIALS THAT YOU DOWNLOAD AFTER CREATING AN AUTHORIZED APP AND SERVICE ACCOUNT
             // ( FEEL FREE TO USE DIRECT CREDENTIALS HERE INSTEAD)
 
-            SytelineAPIRest_01 sytelineAPI = new(
+            SytelineAPIRest_01 sytelineAPI_01 = new(
                 new SytelineConnection(
                     APIType: "ION",
                     Config: "",
@@ -82,7 +82,7 @@ namespace syteline_api_example {
 
             // LOAD A SAMPLE REQUEST
 
-            APILoadCollectionResponse response = sytelineAPI.LoadCollection(
+            APILoadCollectionResponse response_01 = sytelineAPI_01.LoadCollection(
                 idoName: "SLCustomers",
                 properties: [
                     "CustNum",
@@ -93,7 +93,53 @@ namespace syteline_api_example {
                 readOnly: true
             );
 
-            Console.WriteLine($"The request retrieved {response.Items.Count} items.");
+            Console.WriteLine($"The request retrieved {response_01.Items.Count} items.");
+            Console.ReadLine();
+
+            /*********************************************************************************************/
+            /* API GUIDE - PART 3 - LOADING RECORDS - EXAMPLE 1: LOADING SIMPLE IDO, NO PAGINATION
+            /*********************************************************************************************/
+
+            // INITIALIZE THE RESTv2 API THROUGH ION, USING THE CREDENTIALS THAT YOU DOWNLOAD AFTER CREATING AN AUTHORIZED APP AND SERVICE ACCOUNT
+            // ( FEEL FREE TO USE DIRECT CREDENTIALS HERE INSTEAD)
+
+            SytelineAPIRest_02 sytelineAPI_02 = new(
+                new SytelineConnection(
+                    APIType: "ION",
+                    Config: "",
+                    CredentialsION: new(
+                        ti: "",
+                        cn: "",
+                        dt: "",
+                        ci: "",
+                        cs: "",
+                        iu: "",
+                        pu: "",
+                        oa: "",
+                        ot: "",
+                        or: "",
+                        ev: "",
+                        v: "",
+                        saak: "",
+                        sask: ""
+                    )
+                )
+            );
+
+            // LOAD A SAMPLE REQUEST
+
+            APILoadCollectionResponse response_02 = sytelineAPI_02.LoadCollection(
+                idoName: "SLCustomers",
+                properties: [
+                    "CustNum",
+                    "CustSeq",
+                    "Name",
+                ],
+                filter: "CustNum = 'C000079'",
+                readOnly: true
+            );
+
+            Console.WriteLine($"The request retrieved {response_02.Items.Count} items.");
             Console.ReadLine();
 
         }
